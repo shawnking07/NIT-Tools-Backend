@@ -1,7 +1,39 @@
-# 正方系统均分计算器
-###
-* 适用于大部分正方教务系统
-* 仅有所有历史成绩的加权平均分和算术平均分计算(GPA计算后续填坑)
-* 使用requests + pyquery登录解析网页
-* sklearn机器学习识别验证码
-* main.py 为程序入口
+# NIT-Tools backend
+
+> NIT-Tools WeChat mini program backend which is developed for 正方教务系统 to simplify use. Based on [ZfSystem](https://github.com/shawnking07/ZfSystem)
+
+## Dependency
+
+Requests Scikit-learn Pillow Numpy Flask
+
+## Implemented function
+
+* ZhengFang System Login ( Get student's name )
+* Get course table
+* Get all scores
+* Automatically finish the teaching evaluation
+* ...
+
+## How to run
+
+```Bash
+flask run
+```
+
+---
+
+# NIT 小工具 Python 后端
+
+> Python 抓取正方教务系统数据并返回JSON API
+
+## 依赖
+
+Requests Scikit-learn Pillow Numpy Flask
+
+## 实现的功能
+
+* 登录正方，获取学生姓名
+* 获取课表数据
+* 获取历年成绩
+* 一键教学评价
+* ...(待添加)
