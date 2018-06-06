@@ -31,18 +31,22 @@ def login(username, password, url):
     # print(r.text)
     d = pq(r.text)
     name = d("#xhxm").html()
-    # print(name[:-2])
-    return str(name[:-2]), session
+    if name != None:
+        return 0, name[:-2], session
+    else:
+        from handleAlertMsg import handle_alert_msg
+        msgs = handle_alert_msg(r.text)
+        return 1, msgs[0]
 
 
 def s_login(username, password, url, max_times):
     i = 0
     while i < max_times:
-        try:
-            i += 1
-            return login(username, password, url)
-        except Exception:
-            pass
-        time.sleep(2)
-    # print("用户名或密码错误")
+        i += 1
+        lg = login(username, password, url)
+        if lg[0] == 0:
+            return lg[1], lg[2]
+        else:
+            # TODO check alert() message
+            time.sleep(2)
     raise Exception("Login Error")

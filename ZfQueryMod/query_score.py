@@ -26,7 +26,6 @@ def query_score(uid, name, session, url):
         'ddl_kcxz': ''
     }
     r = session.post(new_url, headers=headers, data=payload)
-    r.encoding = "gb2312"
     d = pq(r.text)
     # print(r.text)
     data_list = []
