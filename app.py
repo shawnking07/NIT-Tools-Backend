@@ -34,10 +34,10 @@ def handle_api_exception(error):
     return response
 
 
-@app.route("/api/login", methods=['GET'])
+@app.route("/api/login", methods=['POST'])
 def login():
-    stu_id = request.values.get('stuId')
-    password = request.values.get('password')
+    stu_id = request.form['stuId']
+    password = request.form['password']
     try:
         name = s_login(stu_id, password, url, 3)[0]
     except Exception as e:
@@ -46,10 +46,10 @@ def login():
     return name
 
 
-@app.route("/api/history_scores", methods=['GET'])
+@app.route("/api/history_scores", methods=['POST'])
 def history_scores():
-    stu_id = request.values.get('stuId')
-    password = request.values.get('password')
+    stu_id = request.form['stuId']
+    password = request.form['password']
     try:
         name, zf_session = s_login(stu_id, password, url, 3)
     except Exception as e:
@@ -65,10 +65,10 @@ def history_scores():
     raise APIException("ossas", data, 200)
 
 
-@app.route("/api/course_table", methods=['GET'])
+@app.route("/api/course_table", methods=['POST'])
 def get_course_table():
-    stu_id = request.values.get('stuId')
-    password = request.values.get('password')
+    stu_id = request.form['stuId']
+    password = request.form['password']
     try:
         name, zf_session = s_login(stu_id, password, url, 3)
     except Exception as e:
@@ -79,10 +79,10 @@ def get_course_table():
     raise APIException("ossas", table, 200)
 
 
-@app.route("/api/teaching_evaluate", methods=['GET'])
+@app.route("/api/teaching_evaluate", methods=['POST'])
 def teaching_evaluate():
-    stu_id = request.values.get('stuId')
-    password = request.values.get('password')
+    stu_id = request.form['stuId']
+    password = request.form['password']
     try:
         name, zf_session = s_login(stu_id, password, url, 3)
     except Exception as e:
