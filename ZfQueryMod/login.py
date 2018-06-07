@@ -34,19 +34,27 @@ def login(username, password, url):
     if name != None:
         return 0, name[:-2], session
     else:
-        from handleAlertMsg import handle_alert_msg
+        from ZfQueryMod.handleAlertMsg import handle_alert_msg
         msgs = handle_alert_msg(r.text)
-        return 1, msgs[0]
+        if "验证码" in msgs[0]:
+            return 1, msgs[0]
+        elif "密码" in msgs[0]:
+            return 2, msgs[0]
+        elif "用户名" in msgs[0]:
+            return 3, msgs[0]
 
 
-def s_login(username, password, url, max_times):
+def s_login(username, password, url, max_times=4):
     i = 0
     while i < max_times:
         i += 1
         lg = login(username, password, url)
         if lg[0] == 0:
             return lg[1], lg[2]
-        else:
-            # TODO check alert() message
-            time.sleep(2)
-    raise Exception("Login Error")
+        elif lg[0] == 1:
+            time.sleep(1)
+        elif lg[0] == 2:
+            raise Exception("密码错误")
+        elif lg[0] == 3:
+            raise Exception("学号错误或未按照要求参加教学活动")
+    raise Exception("验证码识别错误")

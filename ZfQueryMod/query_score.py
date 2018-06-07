@@ -5,8 +5,7 @@ from ZfQueryMod.login import s_login
 
 
 def query_score(uid, name, session, url):
-    new_url = url + "xscjcx.aspx?xh=" + uid + "&xm=" + urllib.parse.quote(
-        str(name).encode('gb2312')) + "&gnmkdm=N121605"
+    new_url = url + "xscjcx.aspx?xh=" + uid + "&gnmkdm=N121605"
     headers = {
         'Referer': url + "xs_main.aspx?xh=" + uid
     }

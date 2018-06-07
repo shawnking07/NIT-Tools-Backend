@@ -39,10 +39,10 @@ def login():
     stu_id = request.form['stuId']
     password = request.form['password']
     try:
-        name = s_login(stu_id, password, url, 3)[0]
+        name = s_login(stu_id, password, url)[0]
     except Exception as e:
         print(e)
-        raise APIException("ZLE", "ZfSystem Login Error", 401)
+        raise APIException("error", str(e), 401)
     return name
 
 
@@ -51,13 +51,15 @@ def history_scores():
     stu_id = request.form['stuId']
     password = request.form['password']
     try:
-        name, zf_session = s_login(stu_id, password, url, 3)
+        name, zf_session = s_login(stu_id, password, url)
     except Exception as e:
         print(e)
-        raise APIException("ZLE", "ZfSystem Login Error", 401)
+        raise APIException("error", str(e), 401)
     from ZfQueryMod.query_score import query_score
     from ZfQueryMod.gpa import average
     scores_list = query_score(stu_id, name, zf_session, url)
+    if scores_list == []:
+        raise APIException("oops", "未进行教学评价", 401)
     data = {
         "scores": scores_list,
         "avg": average(scores_list)
@@ -70,10 +72,10 @@ def get_course_table():
     stu_id = request.form['stuId']
     password = request.form['password']
     try:
-        name, zf_session = s_login(stu_id, password, url, 3)
+        name, zf_session = s_login(stu_id, password, url)
     except Exception as e:
         print(e)
-        raise APIException("ZLE", "ZfSystem Login Error", 401)
+        raise APIException("error", str(e), 401)
     from ZfQueryMod.course_table import course_table
     table = course_table(stu_id, name, zf_session, url)
     raise APIException("ossas", table, 200)
@@ -84,10 +86,10 @@ def teaching_evaluate():
     stu_id = request.form['stuId']
     password = request.form['password']
     try:
-        name, zf_session = s_login(stu_id, password, url, 3)
+        name, zf_session = s_login(stu_id, password, url)
     except Exception as e:
         print(e)
-        raise APIException("oh no", "不知道什么错误", 401)
+        raise APIException("error", str(e), 401)
     from ZfQueryMod.teaching_evaluate import evaluate
     evaluate(stu_id, name, zf_session, url)
     raise APIException("ossas", "成功", 200)

@@ -10,5 +10,5 @@ def handle_alert_msg(html):
         script = i.text()
         if "alert" in script:
             s = re.match(r"alert\('(.*)'\)", script).group(0)
-            msgs.append(s[7:-2])
+            msgs.append(s)
     return msgs

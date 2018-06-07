@@ -4,7 +4,7 @@ from pyquery import PyQuery as pq
 
 
 def get_teaching_evaluate_urls(uid, name, session, url):
-    new_url = url + "xsjxpj2.aspx?xh=" + uid + "&xm=" + urllib.parse.quote(str(name).encode('gb2312')) + "&gnmkdm=N123205"
+    new_url = url + "xsjxpj2.aspx?xh=" + uid + "&gnmkdm=N123205"
     headers = {
         'Referer': url + "xs_main.aspx?xh=" + uid
     }

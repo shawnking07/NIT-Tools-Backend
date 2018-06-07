@@ -3,7 +3,7 @@ from pyquery import PyQuery as pq
 
 
 def course_table(uid, name, session, url):
-    new_url = url + "xskbcx.aspx?xh=" + uid + "&xm=" + urllib.parse.quote(str(name).encode('gb2312')) + "&gnmkdm=N121603"
+    new_url = url + "xskbcx.aspx?xh=" + uid + "&gnmkdm=N121603"
     headers = {
         'Referer': url + "xs_main.aspx?xh=" + uid
     }
