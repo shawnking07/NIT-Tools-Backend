@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class APIException(Exception):
     def __init__(self, error_id, message, code=500):
         super().__init__()

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from sklearn.externals import joblib
 from PIL import ImageFilter
 import numpy as np

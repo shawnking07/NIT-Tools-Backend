@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import urllib.parse
 import re
 from pyquery import PyQuery as pq
 
 
-def get_teaching_evaluate_urls(uid, name, session, url):
+# 获取各个教师的教学评价链接
+def get_teaching_evaluate_urls(uid, session, url):
     new_url = url + "xsjxpj2.aspx?xh=" + uid + "&gnmkdm=N123205"
     headers = {
         'Referer': url + "xs_main.aspx?xh=" + uid
@@ -18,8 +20,10 @@ def get_teaching_evaluate_urls(uid, name, session, url):
         dt_urls.append(url)
     return dt_urls
 
-def evaluate(uid, name, session, base_url):
-    urls = get_teaching_evaluate_urls(uid, name, session, base_url)
+
+# 自动评价95
+def evaluate(uid, session, base_url):
+    urls = get_teaching_evaluate_urls(uid, session, base_url)
     headers = {
         'Referer': base_url + "xs_main.aspx?xh=" + uid
     }
@@ -43,7 +47,7 @@ def evaluate(uid, name, session, base_url):
         }
         r = session.post(base_url + url, headers=headers, data=payload)
 
-    new_url = base_url + "xsjxpj2.aspx?xh=" + uid + "&xm=" + urllib.parse.quote(str(name).encode('gb2312')) + "&gnmkdm=N123205"
+    new_url = base_url + "xsjxpj2.aspx?xh=" + uid + "&gnmkdm=N123205"
     headers = {
         'Referer': base_url + "xs_main.aspx?xh=" + uid
     }
@@ -60,3 +64,4 @@ def evaluate(uid, name, session, base_url):
         'Referer': new_url
     }
     r = session.post(new_url, headers=headers, data=payload)
+    # TODO 返回信息处理

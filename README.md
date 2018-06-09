@@ -24,6 +24,8 @@ flask run
 
 # NIT 小工具 Python 后端
 
+> UPDATE: 学校垃圾教务系统不开外网权限 可能无法部署到云服务器了 到时候看看能不能挂个反向代理
+
 > Python 抓取正方教务系统数据并返回JSON API
 
 ## 依赖

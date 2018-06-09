@@ -1,10 +1,27 @@
-import urllib.parse
+# -*- coding: utf-8 -*-
 from pyquery import PyQuery as pq
+from ZfQueryMod.handleAlertMsg import handle_alert_msg
 
-from ZfQueryMod.login import s_login
+
+# 查询课表
+def course_table(uid, session, url):
+    new_url = url + "xskbcx.aspx?xh=" + uid + "&gnmkdm=N121603"
+    headers = {
+        'Referer': url + "xs_main.aspx?xh=" + uid
+    }
+    r = session.get(new_url, headers=headers)
+    d = pq(r.text)
+    table = d("#Table1 tr:gt(1)")
+    tds = pq(table)("td:gt(1)")
+    courses = []
+    for item in tds.items():
+        if item.text() != "":
+            courses.append(item.text())
+    return courses
 
 
-def query_score(uid, name, session, url):
+# 查询历年分数 TODO 选择学期
+def query_score(uid, session, url):
     new_url = url + "xscjcx.aspx?xh=" + uid + "&gnmkdm=N121605"
     headers = {
         'Referer': url + "xs_main.aspx?xh=" + uid
@@ -26,7 +43,6 @@ def query_score(uid, name, session, url):
     }
     r = session.post(new_url, headers=headers, data=payload)
     d = pq(r.text)
-    # print(r.text)
     data_list = []
     lines = d("table.datelist tr:gt(0)")
     for i in lines.items():
@@ -37,3 +53,15 @@ def query_score(uid, name, session, url):
                         'score': pq(i)("td:eq(8)").text(), 'retake': retake_flag}
         data_list.append(subject_data)
     return data_list
+
+
+# 查询考试日期
+def query_exam(uid, session, url):
+    new_url = url + "xscjcx.aspx?xh=" + uid + "&gnmkdm=N121604"
+    headers = {
+        'Referer': url + "xs_main.aspx?xh=" + uid
+    }
+    r = session.get(new_url, headers=headers)
+    msg = handle_alert_msg(r.text)[0]  # 垃圾提示
+    d = pq(r.text)
+    # TODO 目前页面被关闭 待更新

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 from pyquery import PyQuery as pq
 from PIL import Image
@@ -6,7 +7,7 @@ from ZfQueryMod.CAPTCHA_decode import load_predict
 import time
 
 
-
+# 登陆正方获取姓名和关键公告
 def login(username, password, url):
     r = requests.get(url)
     session = requests.session()
@@ -28,33 +29,34 @@ def login(username, password, url):
         'Button1': ""
     }
     r = session.post(url + "default2.aspx", data=payload)
-    # print(r.text)
     d = pq(r.text)
     name = d("#xhxm").html()
-    if name != None:
-        return 0, name[:-2], session
+    from ZfQueryMod.handleAlertMsg import handle_alert_msg
+    board_msg = handle_alert_msg(r.text)[0]
+    if name is not None:
+        return 0, session, name[:-2], board_msg
     else:
-        from ZfQueryMod.handleAlertMsg import handle_alert_msg
-        msgs = handle_alert_msg(r.text)
-        if "验证码" in msgs[0]:
-            return 1, msgs[0]
-        elif "密码" in msgs[0]:
-            return 2, msgs[0]
-        elif "用户名" in msgs[0]:
-            return 3, msgs[0]
+        msg = handle_alert_msg(r.text)[0]
+        if "验证码" in msg:
+            return 1, msg
+        elif "密码" in msg:
+            return 2, msg
+        elif "用户名" in msg:
+            return 3, msg
 
 
+# 循环登陆以解决部分验证码识别错误的问题
 def s_login(username, password, url, max_times=4):
     i = 0
     while i < max_times:
         i += 1
         lg = login(username, password, url)
         if lg[0] == 0:
-            return lg[1], lg[2]
+            return lg[1], lg[2], lg[3]
         elif lg[0] == 1:
             time.sleep(1)
         elif lg[0] == 2:
-            raise Exception("密码错误")
+            raise Exception(lg[1])
         elif lg[0] == 3:
-            raise Exception("学号错误或未按照要求参加教学活动")
+            raise Exception(lg[1])
     raise Exception("验证码识别错误")
