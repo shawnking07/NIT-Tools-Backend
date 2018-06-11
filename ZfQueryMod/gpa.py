@@ -23,7 +23,7 @@ def convert_score(level):
         return 80
     elif level == "中等":
         return 70
-    elif level == ("合格" or "及格"):
+    elif level == "合格" or level == "及格":
         return 60
     elif level == "不及格":
         return 0
