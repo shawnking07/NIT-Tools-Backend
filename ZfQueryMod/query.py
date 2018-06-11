@@ -50,7 +50,8 @@ def query_score(uid, session, url):
         if pq(i)("td:eq(14)").text() != "":
             retake_flag = True
         subject_data = {'name': pq(i)("td:eq(3)").text(), 'weight': float(pq(i)("td:eq(6)").text()),
-                        'score': pq(i)("td:eq(8)").text(), 'retake': retake_flag}
+                        'score': pq(i)("td:eq(8)").text(), 'makeUpScore': pq(i)("td:eq(10)").text(),
+                        'retake': retake_flag}
         data_list.append(subject_data)
     return data_list
 

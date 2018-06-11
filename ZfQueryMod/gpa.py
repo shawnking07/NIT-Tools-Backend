@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 def average(data_list):
-    # 计算均分
+    # 计算均分 只计算通过的课程
     score_sum = 0
     weight_sum = 0
     weight_score_sum = 0
     for i in data_list:
         score = convert_score(i['score'])
+        make_up_score = convert_score(i['makeUpScore'])
+        if score < 60 and make_up_score < 60:
+            continue
         weight = float(i['weight'])
+        if i['makeUpScore'] != "":
+            score = make_up_score
         score_sum += score
         weight_sum += weight
         weight_score_sum += score * weight
@@ -27,6 +32,8 @@ def convert_score(level):
         return 60
     elif level == "不及格":
         return 0
+    elif level == "":
+        return -1
     else:
         return int(level)
 
