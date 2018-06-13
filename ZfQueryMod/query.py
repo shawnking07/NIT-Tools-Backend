@@ -56,13 +56,20 @@ def query_score(uid, session, url):
     return data_list
 
 
-# 查询考试日期
+# 查询考试
 def query_exam(uid, session, url):
-    new_url = url + "xscjcx.aspx?xh=" + uid + "&gnmkdm=N121604"
+    new_url = url + "xskscx.aspx?xh=" + uid + "&gnmkdm=N121604"
     headers = {
         'Referer': url + "xs_main.aspx?xh=" + uid
     }
     r = session.get(new_url, headers=headers)
-    msg = handle_alert_msg(r.text)[0]  # 垃圾提示
+    msg = handle_alert_msg(r.text)  # 垃圾提示
     d = pq(r.text)
-    # TODO 目前页面被关闭 待更新
+    # years = [i.text() for i in d("select[name='xnd'] option:gt(0)").items()]  # 垃圾系统自带Bug第一条为空
+    exam_table = d("table.datelist tr:gt(0)")
+    exams = []
+    for i in exam_table.items():
+        exam = {'name': pq(i)("td:eq(1)").text(), 'time': pq(i)("td:eq(3)").text(),
+                'location': pq(i)("td:eq(4)").text(), 'seat': pq(i)("td:eq(6)").text()}
+        exams.append(exam)
+    return msg, exams

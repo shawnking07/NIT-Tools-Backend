@@ -90,3 +90,18 @@ def teaching_evaluate():
     from ZfQueryMod.teaching_evaluate import evaluate
     evaluate(stu_id, zf_session, url)
     return "ossas"
+
+
+@app.route("/api/exams", methods=['POST'])
+def get_exams():
+    stu_id = request.get_json()['stuId']
+    password = request.get_json()['password']
+    try:
+        zf_session, name, board_msg = s_login(stu_id, password, url)
+    except Exception as e:
+        print(e)
+        raise APIException("error", str(e), 403)
+    from ZfQueryMod.query import query_exam
+    table = query_exam(stu_id, zf_session, url)
+    data = {'msg': table[0], 'exams': table[1]}
+    return jsonify(data)
