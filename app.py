@@ -75,7 +75,7 @@ def get_course_table():
         raise APIException("error", str(e), 403)
     from ZfQueryMod.query import course_table
     table = course_table(stu_id, zf_session, url)
-    raise jsonify(table)
+    return jsonify(table)
 
 
 @app.route("/api/teaching_evaluate", methods=['POST'])

@@ -3,7 +3,7 @@ from pyquery import PyQuery as pq
 from ZfQueryMod.handleAlertMsg import handle_alert_msg
 
 
-# 查询课表
+# 查询课表 TODO 单双周解析
 def course_table(uid, session, url):
     new_url = url + "xskbcx.aspx?xh=" + uid + "&gnmkdm=N121603"
     headers = {
@@ -11,13 +11,47 @@ def course_table(uid, session, url):
     }
     r = session.get(new_url, headers=headers)
     d = pq(r.text)
-    table = d("#Table1 tr:gt(1)")
-    tds = pq(table)("td:gt(1)")
-    courses = []
-    for item in tds.items():
-        if item.text() != "":
-            courses.append(item.text())
-    return courses
+    table = d("#Table1 tr:gt(1) td")
+    raw_courses = [item.text() for item in table.items() if item.text() != ""]
+    return course_format(raw_courses)
+
+
+def course_str_to_dict(s):
+    l = s.split("\n")
+    return {'name': l[0], 'time': l[1], 'teacher': l[2], 'location': l[3]}
+
+
+def course_format(raw):
+    Mo = []
+    Tu = []
+    We = []
+    Th = []
+    Fr = []
+    Sa = []
+    Su = []
+    for i in raw:
+        if "周一" in i:
+            Mo.append(course_str_to_dict(i))
+            continue
+        if "周二" in i:
+            Tu.append(course_str_to_dict(i))
+            continue
+        if "周三" in i:
+            We.append(course_str_to_dict(i))
+        if "周四" in i:
+            Th.append(course_str_to_dict(i))
+            continue
+        if "周五" in i:
+            Fr.append(course_str_to_dict(i))
+            continue
+        if "周六" in i:
+            Sa.append(course_str_to_dict(i))
+            continue
+        if "周日" in i:
+            Su.append(course_str_to_dict(i))
+            continue
+    course = [Su, Mo, Tu, We, Th, Fr, Sa]
+    return course
 
 
 # 查询历年分数 TODO 选择学期
