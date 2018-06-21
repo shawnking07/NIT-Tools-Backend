@@ -18,7 +18,7 @@ def course_table(uid, session, url):
 
 def course_str_to_dict(s):
     l = s.split("\n")
-    return {'name': l[0], 'time': l[1], 'teacher': l[2], 'location': l[3]}
+    return {'name': l[0], 'time': l[1], 'teacher': l[2], 'classroom': l[3]}
 
 
 def course_format(raw):
