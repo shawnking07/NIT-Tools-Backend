@@ -28,14 +28,14 @@ def convert_score(level):
         return 80
     elif level == "中等":
         return 70
-    elif level == "合格" or level == "及格":
+    elif level == "合格" or level == "及格" or level == "免测":
         return 60
     elif level == "不及格":
         return 0
     elif level == "":
         return -1
     else:
-        return int(level)
+        return float(level)
 
 
 def convert_gpa(score):

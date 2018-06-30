@@ -105,3 +105,7 @@ def get_exams():
     table = query_exam(stu_id, zf_session, url)
     data = {'msg': table[0], 'exams': table[1]}
     return jsonify(data)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
